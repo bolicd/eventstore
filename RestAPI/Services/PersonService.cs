@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace RestAPI.Services
 {
-    public class PersonService
+    public class PersonService : IPersonService
     {
         private readonly IPersonRepository _personRepository;
         public PersonService(IPersonRepository personRepository)
@@ -12,11 +12,15 @@ namespace RestAPI.Services
             _personRepository = personRepository;
         }
 
-        public async Task<Person> CreatePerson(string firstName, string lastName)
+        public async Task<PersonId> CreatePerson(string firstName, string lastName)
         {
             var person = Person.CreateNewPerson(firstName, lastName);
-            await _personRepository.SavePersonAsync(person);
-            return person;
+            return await _personRepository.SavePersonAsync(person);
+        }
+
+        public Task<Person> GetPerson(string personId)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
