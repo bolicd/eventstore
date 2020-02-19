@@ -1,5 +1,6 @@
 ﻿using Core.Person;
 using Core.Person.Repositories;
+using RestAPI.Model;
 using System.Threading.Tasks;
 
 namespace RestAPI.Services
@@ -18,9 +19,11 @@ namespace RestAPI.Services
             return await _personRepository.SavePersonAsync(person);
         }
 
-        public Task<Person> GetPerson(string personId)
+        public async Task<PersonDto> GetPerson(string personId)
         {
-            throw new System.NotImplementedException();
+            var person = await _personRepository.GetPerson(personId);
+            return person != null ? new PersonDto() { FirstName = person.FirstName, LastName = person.LastName,
+                PersonId = person.Id.ToString() } : null;
         }
     }
 }

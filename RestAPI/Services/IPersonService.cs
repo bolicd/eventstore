@@ -1,4 +1,5 @@
 ﻿using Core.Person;
+using RestAPI.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace RestAPI.Services
     public interface IPersonService
     {
         Task<PersonId> CreatePerson(string firstName, string lastName);
-        Task<Person> GetPerson(string personId);
+        Task<PersonDto> GetPerson(string personId);
     }
 }

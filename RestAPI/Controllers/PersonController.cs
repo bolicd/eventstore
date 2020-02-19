@@ -1,5 +1,6 @@
 ﻿using Core.Person;
 using Microsoft.AspNetCore.Mvc;
+using RestAPI.Model;
 using RestAPI.Services;
 using Swashbuckle.Swagger.Annotations;
 using System.Threading.Tasks;
@@ -27,10 +28,18 @@ namespace RestAPI.Controllers
         /// <param name="person"></param>
         /// <returns>Newly created person object</returns>
         [HttpPost]
-        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(Person))]
+        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(PersonId))]
         public async Task GeneratePerson([FromBody]GeneratePersonDTO person)
         {
             Ok(await _personService.CreatePerson(person.FirstName, person.LastName));
+        }
+
+
+        [HttpGet]
+        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(PersonDto))]
+        public async Task<PersonDto> GetPerson([FromQuery]string personId)
+        {
+            return await _personService.GetPerson(personId);
         }
 
     }
