@@ -7,12 +7,12 @@ namespace Core.Person.DomainEvents
 {
     public class PersonCreated : DomainEvent
     {
-        public PersonId PersonId { get; }
+        public string PersonId { get; }
         public string FirstName { get; }
         public string LastName { get; }
 
         public PersonCreated(
-            PersonId personId, 
+            string personId, 
             string firstName, 
             string lastName)
         {

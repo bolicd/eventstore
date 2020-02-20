@@ -26,7 +26,7 @@ namespace Core.Person
         {
 
             var person = new Person();
-            person.Apply(new PersonCreated(new PersonId(),
+            person.Apply(new PersonCreated(new PersonId().ToString(),
                 firstName, lastName));
 
             return person;
@@ -34,7 +34,7 @@ namespace Core.Person
 
         public void On(PersonCreated @event)
         {
-            Id = @event.PersonId;
+            Id = new PersonId(@event.PersonId);
             FirstName = @event.FirstName;
             LastName = @event.LastName;
         }

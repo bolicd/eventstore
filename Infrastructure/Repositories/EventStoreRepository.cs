@@ -63,6 +63,8 @@ namespace Infrastructure.Repositories
             var o = JsonConvert.DeserializeObject(eventSelected.Data, _jsonSerializerSettings);
             var evt = o as IDomainEvent;
 
+            // TODO: 
+            // Check if this is needed
             //if (evt != null)
             //{
             //    evt.Sequence = eventSelected.Sequence;
@@ -86,7 +88,7 @@ namespace Infrastructure.Repositories
                 Aggregate = aggregateName,
                 ev.CreatedAt,
                 Data = JsonConvert.SerializeObject(ev, Formatting.Indented, _jsonSerializerSettings),
-                Id = Guid.NewGuid(), // check!
+                Id = Guid.NewGuid(),
                 ev.GetType().Name,
                 AggregateId = aggregateId.ToString(),
                 Version = ++originatingVersion

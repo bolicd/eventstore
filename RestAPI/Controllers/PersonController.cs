@@ -26,15 +26,23 @@ namespace RestAPI.Controllers
         /// Person will be saved as stream of events in event store
         /// </summary>
         /// <param name="person"></param>
-        /// <returns>Newly created person object</returns>
+        /// <returns>Newly created person object aggregateId</returns>
         [HttpPost]
-        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(PersonId))]
-        public async Task GeneratePerson([FromBody]GeneratePersonDTO person)
+        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(object))]
+        public async Task<object> GeneratePerson([FromBody]GeneratePersonDTO person)
         {
-            Ok(await _personService.CreatePerson(person.FirstName, person.LastName));
+            var insertedPersonId = await _personService.CreatePerson(person.FirstName, person.LastName);
+            return new { PersonId = insertedPersonId.ToString() };
         }
 
-
+        /// <summary>
+        /// Fetch aggregate from event store using aggregateId(personId)
+        /// This will fetch all the events for given aggregate and mutate
+        /// aggregate using each event in sequence, therefore reconstructing
+        /// latest aggregate state
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <returns></returns>
         [HttpGet]
         [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(PersonDto))]
         public async Task<PersonDto> GetPerson([FromQuery]string personId)

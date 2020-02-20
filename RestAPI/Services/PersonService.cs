@@ -16,14 +16,23 @@ namespace RestAPI.Services
         public async Task<PersonId> CreatePerson(string firstName, string lastName)
         {
             var person = Person.CreateNewPerson(firstName, lastName);
-            return await _personRepository.SavePersonAsync(person);
+            var pid=  await _personRepository.SavePersonAsync(person);
+            return pid;
         }
 
         public async Task<PersonDto> GetPerson(string personId)
         {
             var person = await _personRepository.GetPerson(personId);
-            return person != null ? new PersonDto() { FirstName = person.FirstName, LastName = person.LastName,
-                PersonId = person.Id.ToString() } : null;
+            //return person != null ? new PersonDto() { FirstName = person.FirstName, LastName = person.LastName,
+            //    PersonId = person.Id.ToString() } : null;
+            return new PersonDto()
+            {
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                PersonId = person.Id.ToString()
+
+            };
         }
+          
     }
 }
