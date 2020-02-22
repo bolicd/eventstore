@@ -24,6 +24,5 @@ namespace Infrastructure.Repositories
             await _eventStore.SaveAsync(person.Id, person.Version, person.DomainEvents);
             return person.Id;
         }
-
     }
 }

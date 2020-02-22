@@ -7,9 +7,9 @@ namespace Core.Person
     public class Person: Tactical.DDD.EventSourcing.AggregateRoot<PersonId>
     {
         public override PersonId Id { get; protected set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public Address PersonAddress { get; set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public Address PersonAddress { get; private set; }
 
         public Person(IEnumerable<IDomainEvent> events) : base(events)
         {
@@ -32,11 +32,29 @@ namespace Core.Person
             return person;
         }
 
+        public void ChangePersonAddress(string street,string country, string zipCode, string city)
+        {
+            // TODO: zipcode validation
+            // all fields must be present
+            Apply(new AddressChanged(city, country, zipCode, street));
+        }
+
         public void On(PersonCreated @event)
         {
             Id = new PersonId(@event.PersonId);
             FirstName = @event.FirstName;
             LastName = @event.LastName;
+        }
+
+        public void On(AddressChanged @event)
+        {
+            PersonAddress = new Address()
+            {
+                City = @event.City,
+                Country = @event.Country,
+                Street = @event.Street,
+                ZipCode = @event.ZipCode
+            };
         }
     }
 }

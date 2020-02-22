@@ -1,4 +1,4 @@
-﻿namespace RestAPI.Controllers
+﻿namespace RestAPI.Model
 {
     public class GeneratePersonDTO
     {

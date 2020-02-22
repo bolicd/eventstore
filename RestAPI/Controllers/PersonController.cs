@@ -1,5 +1,4 @@
-﻿using Core.Person;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RestAPI.Model;
 using RestAPI.Services;
 using Swashbuckle.Swagger.Annotations;
@@ -50,5 +49,22 @@ namespace RestAPI.Controllers
             return await _personService.GetPerson(personId);
         }
 
+        /// <summary>
+        /// Updates person address. New address is added as an event in event store
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("updateAddress")]
+        [SwaggerResponse(System.Net.HttpStatusCode.OK)]
+        public async Task ChangePersonAddress(
+            [FromQuery]string personId,
+            [FromBody]AddressDto address)
+        {
+            await _personService.UpdatePersonAddress(new Core.Person.PersonId(personId),
+                address.City, address.Country, address.Street, address.ZipCode);
+            Ok();
+        }
     }
 }

@@ -23,16 +23,33 @@ namespace RestAPI.Services
         public async Task<PersonDto> GetPerson(string personId)
         {
             var person = await _personRepository.GetPerson(personId);
-            //return person != null ? new PersonDto() { FirstName = person.FirstName, LastName = person.LastName,
-            //    PersonId = person.Id.ToString() } : null;
+            
+            if (person == null) return new PersonDto(); // throw not found exception
+
             return new PersonDto()
             {
                 FirstName = person.FirstName,
                 LastName = person.LastName,
-                PersonId = person.Id.ToString()
-
+                PersonId = person.Id.ToString(),
+                Address = new AddressDto()
+                {
+                    City = person.PersonAddress.City,
+                    Country = person.PersonAddress.Country,
+                    Street = person.PersonAddress.Street,
+                    ZipCode = person.PersonAddress.ZipCode
+                }
             };
         }
-          
+
+
+        public async Task UpdatePersonAddress(PersonId personId, string city, string country, string street, string zipcode)
+        {
+            var person = await _personRepository.GetPerson(personId.ToString());
+         
+            if (person == null) return; // throw person not found exception
+
+            person.ChangePersonAddress(street, country, zipcode, city);
+            await _personRepository.SavePersonAsync(person);
+        }
     }
 }

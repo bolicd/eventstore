@@ -12,5 +12,7 @@ namespace RestAPI.Services
     {
         Task<PersonId> CreatePerson(string firstName, string lastName);
         Task<PersonDto> GetPerson(string personId);
+
+        Task UpdatePersonAddress(PersonId personId, string city, string country, string street, string zipcode);
     }
 }
