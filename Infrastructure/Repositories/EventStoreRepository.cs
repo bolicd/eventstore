@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Infrastructure.Exceptions;
 using Infrastructure.Factories;
 using Infrastructure.Model;
 using Newtonsoft.Json;
@@ -36,40 +37,25 @@ namespace Infrastructure.Repositories
 
         public async Task<IReadOnlyCollection<IDomainEvent>> LoadAsync(IEntityId aggregateRootId)
         {
-            try
+            if (aggregateRootId == null) throw new AggregateRootNotProvidedException("AggregateRootId cannot be null");
+
+            var query = new StringBuilder($@"SELECT {EventStoreListOfColumnsSelect} FROM {EventStoreTableName}");
+            query.Append(" WHERE [AggregateId] = @AggregateId ");
+            query.Append(" ORDER BY [Version] ASC;");
+
+            using (var connection = _connectionFactory.SqlConnection())
             {
-                var query = new StringBuilder($@"SELECT {EventStoreListOfColumnsSelect} FROM {EventStoreTableName}");
-                if (aggregateRootId != null) query.Append(" WHERE [AggregateId] = @AggregateId ");
-                query.Append(" ORDER BY [Version] ASC;");
+                var events = (await connection.QueryAsync<EventStoreDao>(query.ToString(), aggregateRootId != null ? new { AggregateId = aggregateRootId.ToString() } : null)).ToList();
+                var domainEvents = events.Select(TransformEvent).Where(x => x != null).ToList().AsReadOnly();
 
-                using (var connection = _connectionFactory.SqlConnection())
-                {
-                    var events = (await connection.QueryAsync<EventStoreDao>(query.ToString(), aggregateRootId != null ? new { AggregateId = aggregateRootId.ToString() } : null)).ToList();
-                    var domainEvents = events.Select(TransformEvent).Where(x => x != null).ToList().AsReadOnly();
-
-                    return domainEvents;
-                }
+                return domainEvents;
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                throw;
-            }
-
         }
 
         private IDomainEvent TransformEvent(EventStoreDao eventSelected)
         {
             var o = JsonConvert.DeserializeObject(eventSelected.Data, _jsonSerializerSettings);
             var evt = o as IDomainEvent;
-
-            // TODO: 
-            // Check if this is needed
-            //if (evt != null)
-            //{
-            //    evt.Sequence = eventSelected.Sequence;
-            //    evt.Version = eventSelected.Version;
-            //}
 
             return evt;
         }
