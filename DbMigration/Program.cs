@@ -5,17 +5,12 @@ using System.Reflection;
 
 namespace DbMigration
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            IConfiguration config = new ConfigurationBuilder()
-           .AddJsonFile("appsettings.json",
-                        true,
-                        true).Build();
-
-            var connectionString = config.GetConnectionString("EventStoreDatabase");
             Console.WriteLine("Migration starting. ");
+            var connectionString = GetConnectionString(args.Length > 0 ? args[0] : null);
 
             EnsureDatabase.For.SqlDatabase(connectionString); //Creates database if not exist
 
@@ -37,6 +32,19 @@ namespace DbMigration
             {
                 Console.WriteLine("No upgrade is required");
             }
+        }
+
+        private static string GetConnectionString(string connString)
+        {
+
+            if (!string.IsNullOrWhiteSpace(connString)) return connString;
+
+            IConfiguration config = new ConfigurationBuilder()
+           .AddJsonFile("appsettings.json",
+                        true,
+                        true).Build();
+
+            return config.GetConnectionString("EventStoreDatabase");
         }
     }
 }
