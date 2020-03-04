@@ -1,25 +1,39 @@
-﻿using EventStoreTests.Infrastructure;
+﻿using Core.Person;
+using EventStoreTests.Infrastructure;
+using Infrastructure.Factories;
+using Infrastructure.Repositories;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EventStoreTests.Integration
 {
+    [TestFixture]
     public class EventStoreIntegrationTests : IntegrationTestBase
     {
+
+        private IEventStore _eventStore;
+
         [SetUp]
         public void SetUp()
         {
-            StartDatabase();
+            _eventStore = new EventStoreRepository(new SqlConnectionFactory(ConnectionString));
         }
 
         [Test]
-        public void SomeTest()
+        public async Task Given_PersonAggregateCreated_When_SavedToEventStore_ThenShouldBeTheSameWhenFetched()
         {
-            Assert.AreEqual(1, 1);
+            var personId = new PersonId();
+
+            var personAggregate = Person.CreateNewPerson("Chuck", "Norris");
+
+            await _eventStore.SaveAsync(personId,personAggregate.Version, personAggregate.DomainEvents, "PersonAggregate");
+            
+            var results = await _eventStore.LoadAsync(personId);
+
+            // TODO:  check why reconstructed aggregate has 0 domain events in the list?
+            var fetchedPerson = new Person(results);
+            Assert.IsNotNull(results);
+            Assert.AreEqual(personAggregate, fetchedPerson);
         }
     }
 }

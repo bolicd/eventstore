@@ -31,13 +31,13 @@ namespace RestAPI.Services
                 FirstName = person.FirstName,
                 LastName = person.LastName,
                 PersonId = person.Id.ToString(),
-                Address = new AddressDto()
+                Address = person.PersonAddress!=null ? new AddressDto()
                 {
-                    City = person.PersonAddress.City,
-                    Country = person.PersonAddress.Country,
-                    Street = person.PersonAddress.Street,
-                    ZipCode = person.PersonAddress.ZipCode
-                }
+                    City = person.PersonAddress?.City,
+                    Country = person.PersonAddress?.Country,
+                    Street = person.PersonAddress?.Street,
+                    ZipCode = person.PersonAddress?.ZipCode
+                } : null
             };
         }
 
