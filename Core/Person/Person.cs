@@ -34,8 +34,6 @@ namespace Core.Person
 
         public void ChangePersonAddress(string street,string country, string zipCode, string city)
         {
-            // TODO: zipcode validation
-            // all fields must be present
             Apply(new AddressChanged(city, country, zipCode, street));
         }
 
