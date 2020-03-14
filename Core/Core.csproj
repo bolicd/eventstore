@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TacticalDDD" Version="1.0.24" />
+    <PackageReference Include="TacticalDDD" Version="1.0.26" />
   </ItemGroup>
 
 </Project>
