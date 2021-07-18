@@ -28,7 +28,7 @@ namespace RestAPI.Controllers
         /// <returns>Newly created person object aggregateId</returns>
         [HttpPost]
         [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(object))]
-        public async Task<object> GeneratePerson([FromBody]GeneratePersonDTO person)
+        public async Task<object> GeneratePerson([FromBody]GeneratePersonDto person)
         {
             var insertedPersonId = await _personService.CreatePerson(person.FirstName, person.LastName);
             return new { PersonId = insertedPersonId.ToString() };

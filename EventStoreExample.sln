@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{3F3C2DA4-D57D-4081-AA45-93D82B36917B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventStoreTests", "EventStoreTests\EventStoreTests.csproj", "{B769D317-EF0B-4EA8-B6BD-BDD6612FBB48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventStoreProjectTests", "EventStoreTests\EventStoreProjectTests.csproj", "{B769D317-EF0B-4EA8-B6BD-BDD6612FBB48}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{50454FE4-E1E9-4223-B0D3-D48C9C46CB98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B769D317-EF0B-4EA8-B6BD-BDD6612FBB48} = {50454FE4-E1E9-4223-B0D3-D48C9C46CB98}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {62E81FFB-9D9F-44D5-A367-F2EBF2F75A1E}
