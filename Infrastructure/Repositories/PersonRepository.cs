@@ -1,7 +1,9 @@
 ﻿using Core.Person;
 using Core.Person.Repositories;
-using System;
 using System.Threading.Tasks;
+using Infrastructure.Exceptions;
+
+
 
 namespace Infrastructure.Repositories
 {
@@ -15,8 +17,10 @@ namespace Infrastructure.Repositories
 
         public async Task<Person> GetPerson(string id)
         {
-            var personEvents = await _eventStore.LoadAsync(new PersonId(id));
-            return new Person(personEvents);
+            var personId = new PersonId(id);
+            var personEvents = await _eventStore.LoadAsync(personId);
+
+            return personEvents.Count>0 ? new Person(personEvents) : null;
         }
 
         public async Task<PersonId> SavePersonAsync(Person person)

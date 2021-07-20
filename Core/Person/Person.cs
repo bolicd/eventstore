@@ -17,7 +17,7 @@ namespace Core.Person
 
         private Person()
         {
-
+            
         }
 
         public static Person CreateNewPerson(
