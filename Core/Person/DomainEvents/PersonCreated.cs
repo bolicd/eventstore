@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Tactical.DDD;
+﻿using Tacta.EventStore.Domain;
 
 namespace Core.Person.DomainEvents
 {
@@ -14,7 +11,7 @@ namespace Core.Person.DomainEvents
         public PersonCreated(
             string personId, 
             string firstName, 
-            string lastName)
+            string lastName) : base(personId) 
         {
             PersonId = personId;
             FirstName = firstName;

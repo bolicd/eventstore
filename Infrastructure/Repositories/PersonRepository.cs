@@ -1,9 +1,6 @@
 ﻿using Core.Person;
 using Core.Person.Repositories;
 using System.Threading.Tasks;
-using Infrastructure.Exceptions;
-
-
 
 namespace Infrastructure.Repositories
 {

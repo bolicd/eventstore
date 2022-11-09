@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tactical.DDD;
+using Tacta.EventStore.Domain;
 
 namespace Infrastructure.Repositories
 {
@@ -60,7 +60,7 @@ namespace Infrastructure.Repositories
         }
 
 
-        public async Task SaveAsync(IEntityId aggregateId, int originatingVersion, IReadOnlyCollection<IDomainEvent> events, string aggregateName = "Aggregate Name")
+        public async Task SaveAsync(EntityId aggregateId, int originatingVersion, IReadOnlyCollection<IDomainEvent> events, string aggregateName = "Aggregate Name")
         {
             if (events.Count == 0) return;
 
@@ -79,11 +79,8 @@ namespace Infrastructure.Repositories
                 Version = ++originatingVersion
             });
 
-            using (var connection = _connectionFactory.SqlConnection())
-            {
-                await connection.ExecuteAsync(query, listOfEvents);
-            }
-
+            using var connection = _connectionFactory.SqlConnection();
+            await connection.ExecuteAsync(query, listOfEvents);
         }
     }
 }

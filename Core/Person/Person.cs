@@ -1,10 +1,10 @@
 ﻿using Core.Person.DomainEvents;
 using System.Collections.Generic;
-using Tactical.DDD;
+using Tacta.EventStore.Domain;
 
 namespace Core.Person
 {
-    public class Person: Tactical.DDD.EventSourcing.AggregateRoot<PersonId>
+    public class Person: AggregateRoot<PersonId>
     {
         public override PersonId Id { get; protected set; }
         public string FirstName { get; private set; }
@@ -34,7 +34,7 @@ namespace Core.Person
 
         public void ChangePersonAddress(string street,string country, string zipCode, string city)
         {
-            Apply(new AddressChanged(city, country, zipCode, street));
+            Apply(new AddressChanged(city, country, zipCode, street, Id.ToString()));
         }
 
         public void On(PersonCreated @event)
