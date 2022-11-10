@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Tactical.DDD;
+using Tacta.EventStore.Domain;
 
 namespace Infrastructure.Repositories
 {
     public interface IEventStore
     {
-        Task SaveAsync(IEntityId aggregateId, 
+        Task SaveAsync(EntityId aggregateId, 
             int originatingVersion, 
             IReadOnlyCollection<IDomainEvent> events,
             string aggregateName = "Aggregate Name");

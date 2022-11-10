@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Tacta.EventStore.Domain;
 
 namespace Core.Person.DomainEvents
 {
@@ -16,7 +12,8 @@ namespace Core.Person.DomainEvents
         public AddressChanged(string city,
             string country,
             string zipcode,
-            string street)
+            string street,
+            string aggregateId) : base(aggregateId)
         {
             City = city;
             Country = country;
